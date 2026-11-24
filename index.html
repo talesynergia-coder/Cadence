@@ -242,6 +242,12 @@ textarea.sx-in{resize:vertical;min-height:84px}
 .sx-d.blank{background:none;pointer-events:none}
 .sx-ent{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}.sx-ent b{min-width:44px}.sx-ent span{flex:1;opacity:.75}
 .sx-mock{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:13px}.sx-mock span{flex:1}.sx-mock em{font-style:normal;font-size:11.5px;opacity:.6}
+.sxw{min-width:150px;text-align:left}.sxw .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;font-weight:700;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sxw .n{font-size:58px;font-weight:800;line-height:1;margin-top:4px;font-variant-numeric:tabular-nums}.sxw .tm{font-size:38px;font-weight:700;line-height:1.1;margin-top:4px;font-variant-numeric:tabular-nums}
+.sxw .u{font-size:12.5px;opacity:.7;margin-top:2px}.sxrow{display:flex;align-items:center;gap:8px;margin-top:8px}.sxrow span{white-space:nowrap;font-size:12px;opacity:.65;margin-left:4px}
+.sxw .bt{width:40px;height:40px;border-radius:50%;background:var(--accent);color:#000;font-size:15px;display:grid;place-items:center;flex:none}.sxw .bt.alt{background:rgba(255,255,255,.15);color:#fff}
+.sxbar{height:6px;border-radius:6px;background:rgba(255,255,255,.18);overflow:hidden;margin-top:8px}.sxbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s}
+#stimerW.run .tm{color:var(--accent)}
 #tbStudy{position:relative}#tbStudy.run::after{content:'';position:absolute;top:7px;right:7px;width:8px;height:8px;border-radius:50%;background:#3ddc84}
 </style>
 </head>
@@ -265,6 +271,10 @@ textarea.sx-in{resize:vertical;min-height:84px}
   <div class="w" data-w="fcast" data-label="Forecast"><div id="fcast" class="card2"></div></div>
   <div class="w" data-w="wclk" data-label="World clock"><div id="wclk" class="card2"></div></div>
   <div class="w" data-w="greet" data-label="Greeting"><div id="greet"><div id="grT"></div><div id="grD"></div></div></div>
+  <div class="w" data-w="stimer" data-label="Study timer"><div id="stimerW" class="card2 sxw"><div class="k" id="swTopic">Study timer</div><div class="tm" id="swTime">0:00:00</div><div class="sxrow"><button class="bt" id="swGo" aria-label="Start or pause">▶</button><button class="bt alt" id="swFin" aria-label="Finish and save" title="Finish &amp; save">■</button><span id="swToday"></span></div></div></div>
+  <div class="w" data-w="sexam" data-label="Exam countdown"><div class="card2 sxw" id="sexamW"><div class="k" id="seK"></div><div class="n" id="seN"></div><div class="u" id="seU"></div><div class="k" id="seM" style="margin-top:6px;text-transform:none;letter-spacing:.02em"></div></div></div>
+  <div class="w" data-w="sprog" data-label="Chapter progress"><div class="card2 sxw" id="sprogW"><div class="k">Chapters</div><div class="tm" id="spN">0/0</div><div class="sxbar"><i id="spBar"></i></div><div class="u" id="spL"></div></div></div>
+  <div class="w" data-w="stoday" data-label="Study today"><div class="card2 sxw" id="stodayW"><div class="k">Studied today</div><div class="tm" id="syT">0m</div><div class="u" id="syS"></div></div></div>
   <div class="w" data-w="timer" data-label="Sleep timer"><div id="timer" class="card2"></div></div>
   <div class="w" data-w="cal" data-label="Calendar"><div id="cal" class="card2"><div id="calT"></div><div id="calg"></div></div></div>
 </div>
@@ -324,8 +334,8 @@ const shiftHue=(hex,d)=>{const[h,s,l]=rgbToHsl(...hexToRgb(hex));return hslToHex
 
 /* ───────── config ───────── */
 const FONTS=['Inter','Poppins','Montserrat','Space Grotesk','Bebas Neue','Rubik','Playfair Display','Oswald','Outfit','Sora','JetBrains Mono','Syne','system-ui'];
-const WIDGETS=['disc','info','lyrics','queue','clock','weather','acl','greet','text','img','spec','cover','fcast','wclk','cal','timer'];
-const EXTRA_POS={acl:[88,36,1],greet:[16,8,1],text:[50,16,1],img:[50,24,.8],spec:[50,8,1],cover:[12,58,.75],fcast:[88,57,.95],wclk:[14,20,1],cal:[88,80,.95],timer:[88,94,1]};
+const WIDGETS=['disc','info','lyrics','queue','clock','weather','acl','greet','text','img','spec','cover','fcast','wclk','cal','timer','stimer','sexam','sprog','stoday'];
+const EXTRA_POS={acl:[88,36,1],greet:[16,8,1],text:[50,16,1],img:[50,24,.8],spec:[50,8,1],cover:[12,58,.75],fcast:[88,57,.95],wclk:[14,20,1],cal:[88,80,.95],timer:[88,94,1],stimer:[84,64,1],sexam:[50,10,1],sprog:[16,64,1],stoday:[50,92,.9]};
 const PRESETS={
   orbit:{label:'Orbit (disc center, lyrics left)',pos:{disc:[50,45,1],info:[50,80,1],lyrics:[19,42,1],queue:[15,75,1],clock:[90,15,1],weather:[11,94,1]},show:{lyrics:1,queue:1,clock:1,weather:1,info:1}},
   minimal:{label:'Minimal (just the disc)',pos:{disc:[50,44,1.15],info:[50,81,1],lyrics:[19,42,1],queue:[15,80,1],clock:[90,15,1],weather:[11,94,1]},show:{lyrics:0,queue:0,clock:0,weather:0,info:1}},
@@ -354,6 +364,7 @@ const DEFAULTS={
   wclk:{show:false,zones:'America/New_York, Europe/London, Asia/Tokyo',size:22},
   cal:{show:false,monStart:true},
   timer:{show:false,fade:true},
+  stimer:{show:false},sexam:{show:false},sprog:{show:false},stoday:{show:false},
   ui:{autoHide:true,idleSecs:4,pollMs:1500,browserPlayer:true,wakeLock:true,device:''},
   widgets:{}
 };
@@ -790,7 +801,7 @@ const loadWeatherSoon=(()=>{let t;return()=>{clearTimeout(t);t=setTimeout(loadWe
 /* ───────── extra elements ───────── */
 let wxDaily=null,calKey='',sleepEnd=0,sleepIdx=0;const SLEEP_STEPS=[0,15,30,60,90];
 function applyExtras(){
-  const r=document.documentElement.style;
+  const r=document.documentElement.style;renderStudyW();
   r.setProperty('--cover',cfg.cover.size+'px');r.setProperty('--cradius',cfg.cover.radius);r.setProperty('--gsize',cfg.greet.size+'px');r.setProperty('--wcsize',cfg.wclk.size+'px');
   $('#cover').classList.toggle('sh',cfg.cover.shadow);
   const X=cfg.text,tx=$('#txtW');tx.style.cssText=`font-size:${X.size}px;font-weight:${X.weight};font-style:${X.italic?'italic':'normal'};opacity:${X.opacity};text-align:${X.align}`;
@@ -1026,7 +1037,7 @@ const SCHEMA=[
   {type:'btn',l:'Add / remove elements on screen…',fn:()=>{closePanel();setEdit(true)}},
   {type:'note',l:'Switch elements on here, then open Layout mode (grid-arrows button) to drag, pinch-resize or remove them.'},
   {k:'acl.show',l:'Analog clock',type:'toggle'},{k:'greet.show',l:'Greeting',type:'toggle'},{k:'text.show',l:'Custom text',type:'toggle'},{k:'img.show',l:'Image / logo / GIF',type:'toggle'},{k:'spec.show',l:'Spectrum bars',type:'toggle'},
-  {k:'cover.show',l:'Square album cover',type:'toggle'},{k:'fcast.show',l:'Weather forecast',type:'toggle'},{k:'wclk.show',l:'World clock',type:'toggle'},{k:'cal.show',l:'Calendar',type:'toggle'},{k:'timer.show',l:'Sleep timer',type:'toggle'}]},
+  {k:'cover.show',l:'Square album cover',type:'toggle'},{k:'fcast.show',l:'Weather forecast',type:'toggle'},{k:'wclk.show',l:'World clock',type:'toggle'},{k:'cal.show',l:'Calendar',type:'toggle'},{k:'timer.show',l:'Sleep timer',type:'toggle'},{k:'stimer.show',l:'Study timer',type:'toggle'},{k:'sexam.show',l:'Exam countdown',type:'toggle'},{k:'sprog.show',l:'Chapter progress',type:'toggle'},{k:'stoday.show',l:'Studied today',type:'toggle'}]},
  {t:'Element options',items:[
   {type:'note',l:'Analog clock'},{k:'acl.size',l:'Size',type:'range',min:80,max:400,step:2,u:'px'},{k:'acl.seconds',l:'Second hand',type:'toggle'},{k:'acl.numerals',l:'Numbers',type:'toggle'},
   {type:'note',l:'Greeting'},{k:'greet.name',l:'Your name',type:'text'},{k:'greet.size',l:'Size',type:'range',min:16,max:90,step:1,u:'px'},{k:'greet.date',l:'Show date',type:'toggle'},
@@ -1038,7 +1049,13 @@ const SCHEMA=[
   {type:'note',l:'World clock — comma-separated time zones, e.g. Asia/Tokyo, Europe/Paris'},{k:'wclk.zones',l:'Zones',type:'text'},{k:'wclk.size',l:'Time size',type:'range',min:12,max:48,step:1,u:'px'},
   {k:'cal.monStart',l:'Calendar week starts Monday',type:'toggle'},
   {type:'custom',build(){const r=document.createElement('div');r.className='row';const l=document.createElement('label');l.textContent='Sleep in';r.appendChild(l);[0,15,30,60,90].forEach(m=>{const b=document.createElement('button');b.className='btn';b.textContent=m?m+'m':'Off';b.style.marginLeft='4px';b.onclick=()=>setSleep(m);r.appendChild(b)});return r}},
-  {k:'timer.fade',l:'Fade volume out before stopping',type:'toggle'}]},
+  {k:'timer.fade',l:'Fade volume out before stopping',type:'toggle'},
+  {type:'note',l:'Exam countdown — change the exam name and date any time'},
+  {type:'custom',build(){const w=document.createElement('div');
+    const mk=(lab,type,val,on)=>{const r=document.createElement('div');r.className='row';const l=document.createElement('label');l.textContent=lab;const i=document.createElement('input');i.type=type;i.value=val;i.style.cssText='width:190px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;padding:7px 9px;font:inherit;font-size:12px;color-scheme:dark';i.onchange=()=>on(i.value);r.append(l,i);w.appendChild(r)};
+    mk('Exam name','text',SD.exam.label,v=>{SD.exam.label=v.trim()||'Exam';sdSave()});
+    mk('Exam date','date',SD.exam.date,v=>{if(v){SD.exam.date=v;sdSave();toast('Countdown set to '+dayLbl(v),2200)}});
+    return w}}]},
  {t:'Behavior',items:[
   {k:'ui.autoHide',l:'Auto-hide controls',type:'toggle'},{k:'ui.idleSecs',l:'Hide after',type:'range',min:2,max:30,step:1,u:'s'},
   {k:'ui.pollMs',l:'Refresh interval',type:'range',min:800,max:5000,step:100,u:'ms'},
@@ -1156,13 +1173,13 @@ const parseYmd=s=>{const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const SD0={exam:{label:'NEET',date:'2026-12-31'},timer:{acc:0,start:null,topic:''},sessions:[],chapters:[],mocks:[]};
 let SD=merge(SD0,store.get(SK,null)||{});
-const sdSave=()=>{store.set(SK,SD);$('#tbStudy').classList.toggle('run',!!SD.timer.start)};
+const sdSave=()=>{store.set(SK,SD);$('#tbStudy').classList.toggle('run',!!SD.timer.start);renderStudyW()};
 const fmtMin=m=>{m=Math.round(m);const a=Math.floor(m/60),b=m%60;return a?(b?`${a}h ${b}m`:`${a}h`):`${b}m`};
 const dayMin=d=>SD.sessions.filter(s=>s.date===d).reduce((a,s)=>a+s.min,0);
 const timerMs=()=>SD.timer.acc+(SD.timer.start?Date.now()-SD.timer.start:0);
 const hmsT=ms=>{const s=Math.floor(ms/1000);return Math.floor(s/3600)+':'+pad2(Math.floor(s/60)%60)+':'+pad2(s%60)};
 const dayLbl=s=>parseYmd(s).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
-let stTab='today',stMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1),stSel=ymd(new Date()),stDraft={min:'',date:''},stTickId=null;
+let stOpenExam=false,stTab='today',stMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1),stSel=ymd(new Date()),stDraft={min:'',date:''},stTickId=null;
 
 function sxField(ph,val,oninput,type,cls){const i=h('input','sx-in'+(cls?' '+cls:''));i.type=type||'text';i.placeholder=ph||'';i.value=val==null?'':val;if(type==='number'){i.min=0;i.inputMode='numeric'}if(oninput)i.oninput=()=>oninput(i.value);i.autocomplete='off';i.spellcheck=false;return i}
 function sxCard(title,right){const c=h('div','sx-card');if(title){const hd=h('div','sx-h');hd.append(h('b',null,title),h('span',null,right||''));c.appendChild(hd)}return c}
@@ -1182,7 +1199,7 @@ function stToday(){
   const hero=h('div','sx-hero');
   const k=h('div','k');k.id='sxK';const n=h('div','n');n.id='sxDays';const u=h('div','u');u.id='sxU';const t=h('div','t');t.id='sxHms';
   hero.append(k,n,u,t);pbody.appendChild(hero);
-  const d=document.createElement('details');d.appendChild(h('summary',null,'Edit exam date'));
+  const d=document.createElement('details');d.open=stOpenExam;stOpenExam=false;d.appendChild(h('summary',null,'Edit exam date'));
   const lab=sxField('Exam name',SD.exam.label,v=>{SD.exam.label=v;sdSave();stTick()});
   const dt=sxField('',SD.exam.date,v=>{if(v){SD.exam.date=v;sdSave();stTick()}},'date');
   d.append(h('div','sx-lbl','Name'),lab,h('div','sx-lbl','Date'),dt);pbody.appendChild(d);
@@ -1195,10 +1212,7 @@ function stToday(){
   c.appendChild(h('div','sx-lbl','What are you studying?'));
   c.appendChild(sxField('For example, Rotational Motion',SD.timer.topic,v=>{SD.timer.topic=v;store.set(SK,SD)}));
   const main=h('button','btn pri sx-w',run?'Pause':paused?'Resume':'Start');
-  main.onclick=()=>{
-    if(run){SD.timer.acc=timerMs();SD.timer.start=null;stDraft={min:String(Math.max(1,Math.round(SD.timer.acc/60000))),date:ymd(new Date())}}
-    else{SD.timer.start=Date.now()}
-    sdSave();stRe()};
+  main.onclick=()=>{stToggle();stRe()};
   c.appendChild(main);
   if(paused){
     if(stDraft.min===''){stDraft={min:String(Math.max(1,Math.round(SD.timer.acc/60000))),date:ymd(new Date())}}
@@ -1335,7 +1349,30 @@ function stCalendar(){
     SD.sessions.push({id:uid(),date:stSel,min:m,topic:tp.value.trim()});sdSave();stRe()};
   dc.appendChild(add);pbody.appendChild(dc);
 }
-setInterval(()=>{if(panelKind==='study')stTick()},1000);
+function stToggle(){
+  if(SD.timer.start){SD.timer.acc=timerMs();SD.timer.start=null;stDraft={min:String(Math.max(1,Math.round(SD.timer.acc/60000))),date:ymd(new Date())}}
+  else SD.timer.start=Date.now();
+  sdSave();
+}
+function stFinish(){if(SD.timer.start)stToggle();stTab='today';openPanel('study')}
+function renderStudyW(){
+  if(!cfg.stimer)return;
+  const T=ymd(new Date());
+  if(cfg.stimer.show){const run=!!SD.timer.start;$('#swTime').textContent=hmsT(timerMs());$('#swTopic').textContent=SD.timer.topic||'Study timer';
+    $('#swGo').textContent=run?'❚❚':'▶';$('#stimerW').classList.toggle('run',run);$('#swFin').style.display=SD.timer.acc>0||run?'':'none';$('#swToday').textContent='today '+fmtMin(dayMin(T))}
+  if(cfg.sexam.show){const ex=parseYmd(SD.exam.date),diff=ex-Date.now();
+    $('#seK').textContent=(SD.exam.label||'Exam')+' · '+ex.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    if(diff<=0){$('#seN').textContent='0';$('#seU').textContent=diff>-864e5?'exam day — good luck!':'date has passed'}
+    else{const sec=Math.floor(diff/1000),d=Math.floor(sec/86400);$('#seN').textContent=d;$('#seU').textContent=(d===1?'day to go':'days to go')+' · '+pad2(Math.floor(sec/3600)%24)+'h '+pad2(Math.floor(sec/60)%60)+'m'}
+    const t0=parseYmd(T),nx=SD.mocks.filter(m=>parseYmd(m.date)>=t0).sort((a,b)=>a.date.localeCompare(b.date))[0];
+    if(nx){const dd=Math.round((parseYmd(nx.date)-t0)/864e5);$('#seM').textContent=nx.name+' · '+(dd?`in ${dd}d`:'today')}else $('#seM').textContent=''}
+  if(cfg.sprog.show){const ch=SD.chapters,dn=ch.filter(c=>c.done).length,lf=ch.filter(c=>c.done&&c.left).length;
+    $('#spN').textContent=dn+'/'+ch.length;$('#spBar').style.width=(ch.length?dn/ch.length*100:0)+'%';$('#spL').textContent=lf?lf+' topic'+(lf>1?'s':'')+' left to revise':ch.length?'chapters done':'add chapters in Study'}
+  if(cfg.stoday.show){const st=stStreak();$('#syT').textContent=fmtMin(dayMin(T));$('#syS').textContent=st?st+' day streak':'start a streak today'}
+}
+$('#swGo').onclick=()=>{stToggle();if(panelKind==='study'&&stTab==='today')stRe()};$('#swFin').onclick=stFinish;
+['stimerW','sexamW','sprogW','stodayW'].forEach(id=>{$('#'+id).addEventListener('dblclick',()=>{stTab=id==='sprogW'?'chapters':'today';stOpenExam=id==='sexamW';openPanel('study')})});
+setInterval(()=>{if(panelKind==='study')stTick();renderStudyW()},1000);
 
 /* ───────── wiring ───────── */
 let volDrag=false;
