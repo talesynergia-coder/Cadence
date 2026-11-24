@@ -1,21 +1,28 @@
 # Cadence — study companion
 
-A standalone study app (separate from the vinyl player). Paper-and-ink look, light/dark.
+A standalone study app. Paper-and-ink look that re-colours itself to the song you're playing.
 
 ## Features
 - Focus: exam countdown, stopwatch + Pomodoro (25/5, 50/10, 90/15) that auto-logs focus blocks, subject tagging,
-  daily goal ring + streak, today's plan, spaced-revision queue, generated soundscapes (rain / deep / wind / static)
-- Syllabus: chapters by subject, tick done with an optional "topic left", confidence rating, auto revision
-  schedule (1, 3, 7, 21, 45 days)
-- Calendar: heat-map month, per-day entries by subject, last-7-days chart, time by subject
-- Mocks: log marks for Physics / Chemistry / Biology (out of 720), trend chart, weakest-subject callout, upcoming mocks
-- Glance: full-screen board (timer, countdown, today, syllabus) for an iPad on your desk — keeps the screen awake
-- Settings: exam name/date, daily goal, theme, subjects, backup / restore
+  daily goal ring + streak, today's plan, spaced-revision queue, generated soundscapes
+- Music: link Spotify, browse playlists / liked / recent / search, play, queue, mini player on every screen
+- App colour: Match song (album-art colours), Custom (any colour), or Classic — Settings → App colour
+- Syllabus: chapters by subject, "topic left", confidence, auto revision (1, 3, 7, 21, 45 days)
+- Calendar: heat-map month, per-day entries, last-7-days chart, time by subject
+- Mocks: Physics / Chemistry / Biology marks out of 720, trend chart, weakest-subject callout
+- Glance: full-screen desk board (timer, countdown, today, syllabus)
 
-## Files
-index.html, manifest.webmanifest, sw.js (offline), icons/ (svg + png)
+## Spotify setup (one time)
+1. developer.spotify.com/dashboard → your app (Client ID 599e9eb44fcf4a729e8ad3d5afdd7f10) → Settings → Redirect URIs
+2. Add your hosted Cadence URL exactly as shown in Cadence → Music → "Connect Spotify" (e.g. https://yourname.github.io/cadence/)
+3. If the app is in development mode, add your Spotify account under User management
+4. Open Cadence → Music → Connect Spotify. Spotify Premium is needed to play.
+On iPad the music plays through the Spotify app (open it once, play any song, come back); Cadence controls it.
 
 ## Host (GitHub Pages)
-Upload everything in this folder to a repo root (keep the icons folder) and enable Pages.
-On iPad: Safari → Share → Add to Home Screen. Data lives on the device; use Settings → Download backup.
-Data from the earlier integrated tracker (same browser) is imported automatically on first open.
+Upload everything in this folder to a repo root (keep icons/) and enable Pages.
+The home-screen icon is embedded inside index.html, so it works even if icons/ is missing.
+iPad: Safari → Share → Add to Home Screen (delete any old Cadence icon first).
+
+## Files
+index.html, manifest.webmanifest, sw.js (offline), icons/
