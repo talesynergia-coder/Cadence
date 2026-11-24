@@ -1,20 +1,21 @@
-# Cadence
+# Cadence — study companion
 
-Full-screen Spotify vinyl player + built-in NEET study tracker.
+A standalone study app (separate from the vinyl player). Paper-and-ink look, light/dark.
+
+## Features
+- Focus: exam countdown, stopwatch + Pomodoro (25/5, 50/10, 90/15) that auto-logs focus blocks, subject tagging,
+  daily goal ring + streak, today's plan, spaced-revision queue, generated soundscapes (rain / deep / wind / static)
+- Syllabus: chapters by subject, tick done with an optional "topic left", confidence rating, auto revision
+  schedule (1, 3, 7, 21, 45 days)
+- Calendar: heat-map month, per-day entries by subject, last-7-days chart, time by subject
+- Mocks: log marks for Physics / Chemistry / Biology (out of 720), trend chart, weakest-subject callout, upcoming mocks
+- Glance: full-screen board (timer, countdown, today, syllabus) for an iPad on your desk — keeps the screen awake
+- Settings: exam name/date, daily goal, theme, subjects, backup / restore
 
 ## Files
-- index.html — the whole app
-- manifest.webmanifest — installable app (Add to Home Screen)
-- icons/ — icon.svg, icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png
+index.html, manifest.webmanifest, sw.js (offline), icons/ (svg + png)
 
-## Deploy (GitHub Pages)
-Put all of these in the repo root, keeping the `icons/` folder, then enable Pages.
-Your Spotify redirect URI stays the same as before if the URL doesn't change.
-
-## Study tracker (button next to Library, or press T)
-- Today: days left to exam (edit the date), live study timer, mock test countdowns, backup/restore
-- Chapters: add by subject, tick off, optionally note a topic left
-- Widgets: Settings → Elements on screen → Study timer / Exam countdown / Chapter progress / Studied today, then Layout mode to place them (double-tap a widget to open the tracker)
-- Calendar: monthly view of minutes studied, streak, add/delete entries per day
-
-Study data is stored in the browser (localStorage). Use Backup to move it between devices.
+## Host (GitHub Pages)
+Upload everything in this folder to a repo root (keep the icons folder) and enable Pages.
+On iPad: Safari → Share → Add to Home Screen. Data lives on the device; use Settings → Download backup.
+Data from the earlier integrated tracker (same browser) is imported automatically on first open.
