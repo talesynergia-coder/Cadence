@@ -334,7 +334,7 @@ const PRESETS={
   poster:{label:'Poster (big square art)',pos:{disc:[50,43,1.7],info:[50,88,1],lyrics:[19,42,1],queue:[15,80,1],clock:[90,15,1],weather:[11,94,1]},show:{lyrics:0,queue:0,clock:1,weather:0,info:1},set:{'art.shape':'rounded','art.spin':false,'viz.style':'off'}}
 };
 const DEFAULTS={
-  clientId:'08396d14ba9a499bbbcb67733b1f46a2',
+  clientId:'599e9eb44fcf4a729e8ad3d5afdd7f10',
   theme:{accentMode:'auto',accent:'#ff5a3c',text:'#ffffff',font:'Inter',lyricsFont:'Inter',glass:.35,blur:18},
   bg:{mode:'art',color:'#05060a',image:'',video:'',blur:60,dim:.5,vignette:.55},
   art:{show:true,shape:'record',size:300,spin:true,spinSpeed:20,glow:true},
@@ -360,7 +360,7 @@ const DEFAULTS={
 DEFAULTS.widgets=Object.fromEntries(WIDGETS.map(w=>{const q=PRESETS.orbit.pos[w]||EXTRA_POS[w];return[w,{x:q[0],y:q[1],s:q[2]}]}));
 const _old=store.get('aura.cfg',{})||{};
 let cfg=merge(DEFAULTS,store.get('needle.cfg',null)||{clientId:_old.clientId||DEFAULTS.clientId});
-if(!cfg.clientId)cfg.clientId=DEFAULTS.clientId;
+if(!cfg.clientId||cfg.clientId==='08396d14ba9a499bbbcb67733b1f46a2')cfg.clientId=DEFAULTS.clientId;
 const save=()=>store.set('needle.cfg',cfg);
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 
