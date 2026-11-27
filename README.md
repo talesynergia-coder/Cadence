@@ -17,7 +17,7 @@ A standalone study app. Paper-and-ink look that re-colours itself to the song yo
 2. Add your hosted Cadence URL exactly as shown in Cadence → Music → "Connect Spotify" (e.g. https://yourname.github.io/cadence/)
 3. If the app is in development mode, add your Spotify account under User management
 4. Open Cadence → Music → Connect Spotify. Spotify Premium is needed to play.
-On iPad the music plays through the Spotify app (open it once, play any song, come back); Cadence controls it.
+Cadence plays music inside the browser first (Spotify Web Playback SDK, Premium). The Music screen shows whether the browser player is ready, or why it can’t start. If the browser blocks it (Spotify doesn’t officially support iPad browsers), Cadence falls back to controlling the Spotify app.
 
 ## Host (GitHub Pages)
 Upload everything in this folder to a repo root (keep icons/) and enable Pages.
